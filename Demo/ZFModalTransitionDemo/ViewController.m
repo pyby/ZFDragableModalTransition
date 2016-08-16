@@ -43,7 +43,7 @@
     self.animator.transitionDuration = 0.7f;
     
     if (self.scrollViewSwitch.isOn) {
-        [self.animator setContentScrollView:modalVC.scrollView];
+        [self.animator setContentScrollView:modalVC.scrollView needPullToRefreshOnScrollView:NO];
     }
     
     NSString *title = [sender titleForState:UIControlStateNormal];

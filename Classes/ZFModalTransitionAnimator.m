@@ -59,7 +59,7 @@
     }
 }
 
-- (void)setContentScrollView:(UIScrollView *)scrollView
+- (void)setContentScrollView:(UIScrollView *)scrollView needPullToRefreshOnScrollView:(BOOL)needPullToRefreshOnScrollView
 {
     // always enable drag if scrollview is set
     if (!self.dragable) {
@@ -68,6 +68,7 @@
     // and scrollview will work only for bottom mode
     self.direction = ZFModalTransitonDirectionBottom;
     self.gesture.scrollview = scrollView;
+    self.gesture.needPullToRefreshOnScrollView = needPullToRefreshOnScrollView;
 }
 
 - (void)setDirection:(ZFModalTransitonDirection)direction
@@ -76,6 +77,7 @@
     // scrollview will work only for bottom mode
     if (_direction != ZFModalTransitonDirectionBottom) {
         self.gesture.scrollview = nil;
+        self.gesture.needPullToRefreshOnScrollView = NO;
     }
 }
 
@@ -542,7 +544,11 @@
 
     CGFloat topVerticalOffset = -self.scrollview.contentInset.top;
 
-    if ((fabs(velocity.x) < fabs(velocity.y)) && (nowPoint.y > prevPoint.y) && (self.scrollview.contentOffset.y <= topVerticalOffset)) {
+    if (self.needPullToRefreshOnScrollView && self.scrollview && CGRectContainsPoint([self.scrollview convertRect:self.scrollview.bounds toView:self.view], nowPoint)) {
+        self.state = UIGestureRecognizerStateFailed;
+        self.isFail = @YES;
+    }
+    else if ((fabs(velocity.x) < fabs(velocity.y)) && (nowPoint.y > prevPoint.y) && (self.scrollview.contentOffset.y <= topVerticalOffset)) {
         self.isFail = @NO;
     } else if (self.scrollview.contentOffset.y >= topVerticalOffset) {
         self.state = UIGestureRecognizerStateFailed;

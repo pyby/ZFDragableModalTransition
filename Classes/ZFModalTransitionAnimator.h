@@ -17,6 +17,7 @@ typedef NS_ENUM(NSUInteger, ZFModalTransitonDirection) {
 
 @interface ZFDetectScrollViewEndGestureRecognizer : UIPanGestureRecognizer
 @property (nonatomic, weak) UIScrollView *scrollview;
+@property (assign) BOOL needPullToRefreshOnScrollView;
 @end
 
 @interface ZFModalTransitionAnimator : UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate>
@@ -31,6 +32,6 @@ typedef NS_ENUM(NSUInteger, ZFModalTransitonDirection) {
 @property CGFloat transitionDuration;
 
 - (id)initWithModalViewController:(UIViewController *)modalViewController;
-- (void)setContentScrollView:(UIScrollView *)scrollView;
+- (void)setContentScrollView:(UIScrollView *)scrollView needPullToRefreshOnScrollView:(BOOL)needPullToRefreshOnScrollView;
 
 @end
